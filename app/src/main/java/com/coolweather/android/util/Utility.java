@@ -45,6 +45,7 @@ public class Utility {
                     city.setCityName(cityObject.getString("name"));
                     city.setCityCode(cityObject.getInt("id"));
                     city.setProvinceId(provinceId);
+                    city.save();
                 }
                 return true;
             }catch (JSONException e){
