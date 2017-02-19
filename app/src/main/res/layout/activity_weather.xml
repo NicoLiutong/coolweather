@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/title"/>
+
+<FrameLayout
+    android:id="@+id/weather_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
    >
-
     <ImageView
-        android:id="@+id/bing_pic_img"
+        android:id="@+id/animation_pic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
@@ -34,8 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/title"/>
-
             <include layout="@layout/now"/>
 
             <include layout="@layout/forecast"/>
@@ -61,3 +65,4 @@
     </android.support.v4.widget.DrawerLayout>
 
 </FrameLayout>
+</LinearLayout>
