@@ -89,7 +89,6 @@ public class WeatherActivity extends AppCompatActivity {
         windDirectorText = (TextView) findViewById(R.id.wind_direction);
         windPowerText = (TextView) findViewById(R.id.wind_power);
         relativeHumidityText = (TextView) findViewById(R.id.relative_humidity);
-
         forecastLayout = (LinearLayout) findViewById(R.id.forecast_layout);
         aqiText = (TextView) findViewById(R.id.aqi_text);
         pm25Text = (TextView) findViewById(R.id.pm25_text);
