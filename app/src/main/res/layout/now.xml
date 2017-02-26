@@ -38,9 +38,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:textSize="20sp"/>
+                android:textSize="15sp"/>
             <View
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="3dp"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#fff"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/title_update_time"
@@ -59,12 +59,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:textColor="#fff"
-                android:textSize="20sp"/>
+                android:textSize="15sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:text="更新"/>
         </LinearLayout>
 
@@ -95,7 +95,7 @@
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
                android:textColor="#fff"
-               android:textSize="35sp"
+               android:textSize="25sp"
                android:gravity="center"
                />
        </LinearLayout>
@@ -126,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#fff"
-                android:textSize="35sp"
+                android:textSize="25sp"
                 android:gravity="center"
                 />
     </LinearLayout>
