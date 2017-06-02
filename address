@@ -15,8 +15,13 @@ uCorp：http://blog.csdn.net/copy_yuan/article/details/51727070；http://blog.cs
 android中自定義view的自定義屬性：http://blog.csdn.net/xmxkf/article/details/51468648
 editview獲取焦點：http://www.cnblogs.com/colorful-life/p/4617253.html
 editview取消焦點：http://blog.csdn.net/subaohao/article/details/9043895
-紡微信裁剪圖片：http://blog.csdn.net/mywebstudy/article/details/7814695
 裁剪图片：https://github.com/oginotihiro/cropview
+android7.0調用相機：http://blog.csdn.net/u010873775/article/details/72811581；http://mt.sohu.com/it/d20170425/136282885_659256.shtml；
+                    http://blog.csdn.net/u010212089/article/details/53538680；http://blog.csdn.net/u010356768/article/details/70808162
+android7.0動態權限：http://blog.csdn.net/u011216417/article/details/69916964
+
+
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
