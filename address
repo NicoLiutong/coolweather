@@ -16,6 +16,151 @@ android中自定義view的自定義屬性：http://blog.csdn.net/xmxkf/article/d
 editview獲取焦點：http://www.cnblogs.com/colorful-life/p/4617253.html
 editview取消焦點：http://blog.csdn.net/subaohao/article/details/9043895
 紡微信裁剪圖片：http://blog.csdn.net/mywebstudy/article/details/7814695
+裁剪图片：https://github.com/oginotihiro/cropview
+
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final int REQUEST_PICK = 9162;
+
+    public static final int TAKE_PHOTO = 1;
+
+    private CropView cropView;
+    private ImageView resultIv;
+    private LinearLayout btnlay;
+    private Button doneBtn;
+    private Button cancelBtn;
+
+    private Bitmap croppedBitmap;
+
+    private Uri imageUri;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        cropView = (CropView) findViewById(R.id.cropView);
+        resultIv = (ImageView) findViewById(R.id.resultIv);
+        btnlay = (LinearLayout) findViewById(R.id.btnlay);
+        doneBtn = (Button) findViewById(R.id.doneBtn);
+        cancelBtn = (Button) findViewById(R.id.cancelBtn);
+
+        doneBtn.setOnClickListener(this);
+        cancelBtn.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_pick:
+                reset();
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+                startActivityForResult(intent, REQUEST_PICK);
+                return true;
+            case R.id.action_photo:
+                try{
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Crop");
+                    if(!file.exists()){
+                        file.mkdir();
+                    }
+                    File outputImage = new File(file,"photo.jpg");
+                    if(outputImage.exists()){
+                        outputImage.delete();
+                    }
+                    outputImage.createNewFile();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+                if(Build.VERSION.SDK_INT <= 24){
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Crop");
+                    File outputImage = new File(file,"photo.jpg");
+                   imageUri = FileProvider.getUriForFile(MainActivity.this,"com.example.myapplication",outputImage);
+                }else {
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Crop");
+                    File outputImage = new File(file,"photo.jpg");
+                    imageUri = Uri.fromFile(outputImage);
+                }
+                Intent intent1 = new Intent("android.media.action.IMAGE_CAPTURE");
+                intent1.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+                startActivityForResult(intent1,TAKE_PHOTO);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQUEST_PICK) {
+            Uri source = data.getData();
+
+            cropView.setVisibility(View.VISIBLE);
+            btnlay.setVisibility(View.VISIBLE);
+
+            cropView.of(source).asSquare().initialize(MainActivity.this);
+        }
+        if(resultCode == RESULT_OK && requestCode == TAKE_PHOTO){
+            cropView.setVisibility(View.VISIBLE);
+            btnlay.setVisibility(View.VISIBLE);
+            cropView.of(imageUri).asSquare().initialize(MainActivity.this);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.doneBtn) {
+            final ProgressDialog dialog = ProgressDialog.show(MainActivity.this, null, "Please wait…", true, false);
+
+            cropView.setVisibility(View.GONE);
+            btnlay.setVisibility(View.GONE);
+            resultIv.setVisibility(View.VISIBLE);
+
+            new Thread() {
+                public void run() {
+                    croppedBitmap = cropView.getOutput();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            resultIv.setImageBitmap(croppedBitmap);
+                        }
+                    });
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "Crop");
+                    Uri destination = Uri.fromFile(new File(file, "cropped.jpg"));
+                    CropUtil.saveOutput(MainActivity.this, destination, croppedBitmap, 90);
+                    Log.d("url",destination.toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            }.start();
+        } else if (id == R.id.cancelBtn) {
+            reset();
+        }
+    }
+
+    private void reset() {
+        cropView.setVisibility(View.GONE);
+        resultIv.setVisibility(View.GONE);
+        btnlay.setVisibility(View.GONE);
+        resultIv.setImageBitmap(null);
+    }
+}
+
+
+
 
 
 
