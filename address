@@ -28,3 +28,167 @@ RecyclerView長按多選：http://blog.csdn.net/Loften_93663469/article/details/
 AndroidStudio使用:http://www.open-open.com/lib/view/open1468121363300.html;http://www.open-open.com/lib/view/open1468121618489.html;
 RecyclerVtew滑动监听：http://blog.csdn.net/wyb112233/article/details/50429077
 recyclerView下拉刷新、上划加载：https://github.com/llxdaxia/RecyclerView
+
+
+
+
+
+
+
+
+
+package com.example.bianqian.fragment;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+import com.example.bianqian.R;
+import com.example.bianqian.adapter.MultiItemTypeSupport;
+import com.example.bianqian.adapter.MyAdapter;
+import com.example.bianqian.adapter.MyViewHolder;
+import com.example.bianqian.db.UserNote;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by 刘通 on 2017/6/15.
+ */
+
+public class MoodNote extends Fragment {
+
+    public static final int TITLE = 1;
+    public static final int NOTEITEM = 2;
+
+    private RecyclerView mainRecyclerView;
+
+    private Button cancleButton,deletButton;
+
+    private LinearLayout cancleDeletLayout;
+
+    private List<UserNote> data;
+
+    private MyAdapter<UserNote> adapter;
+
+    private MultiItemTypeSupport<UserNote> multiItemTypeSupport;
+
+    private Integer date;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.main_activity_recycler,container,false);
+        mainRecyclerView = (RecyclerView) view.findViewById(R.id.main_recyclerview);
+        cancleDeletLayout = (LinearLayout) view.findViewById(R.id.cancle_delet_layout);
+        cancleDeletLayout.setVisibility(View.GONE);
+        cancleButton = (Button) view.findViewById(R.id.cancle_button);
+        deletButton = (Button) view.findViewById(R.id.delet_button);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        multiItemTypeSupport = new MultiItemTypeSupport<UserNote>() {
+            @Override
+            public int getLayoutId(int itenType) {
+                if(itenType == TITLE){
+                    return R.layout.date_item;
+                }else {
+                    return R.layout.item_note;
+                }
+            }
+
+            @Override
+            public int getItemViewType(int position, UserNote userNote) {
+                if(userNote.getObjectId().equals("1")){
+                    return TITLE;
+                }else {
+                    return NOTEITEM;
+                }
+            }
+        };
+
+
+        intialize();
+        adapter = new MyAdapter<UserNote>(getContext(),data,multiItemTypeSupport) {
+            @Override
+            public void convert(final MyViewHolder holder, int viewType, UserNote userNote, boolean isClickLong) {
+                if(viewType == TITLE){
+                    holder.setText(R.id.item_date_title,userNote.getNote());
+                    holder.setInvisiblity(R.id.note_top_line);
+					intializeRecycler(holder,viewType,userNote,isClickLong);
+					
+                }else {
+                    intializeRecycler(holder,viewType,userNote,isClickLong);
+					
+                }
+            }
+        };
+
+        mainRecyclerView.setLayoutManager(layoutManager);
+        mainRecyclerView.setAdapter(adapter);
+        return view;
+    }
+
+    private List<UserNote> intialize(){
+        data = new ArrayList<>();
+        UserNote user1 = new UserNote();
+        user1.setMoodColor("red");
+        user1.setNote("我爱你");
+        user1.setObjectId("1");
+        data.add(user1);
+        UserNote user2 = new UserNote();
+        user2.setMoodColor("green");
+        user2.setNote("mamapi");
+        user2.setObjectId("2");
+        data.add(user2);
+        UserNote user3 = new UserNote();
+        user3.setMoodColor("blue");
+        user3.setNote("mamapi");
+        user3.setObjectId("3");
+        data.add(user3);
+        return data;
+    }
+	
+	public void intializeRecycler(MyViewHolder holder, int viewType, UserNote userNote, boolean isClickLong){
+			int circleColor,backgroundColor,textColor;
+			switch(userNote){
+				case red : circleColor = R.drawable.red_circle;
+						   backgroundColor = R.color.text_background_red;
+						   textColor = R.color.text_red;
+				break;
+			
+			}
+			holder.setCircleColor(R.id.note_circle,circleColor);
+            holder.setBackGround(R.id.note_card_color,backgroundColor);
+            holder.setTextColor(R.id.note_text,textColor);
+			holder.setText(R.id.note_text,userNote.getNote());
+			if(isClickLong){
+				holder.setOnClickListener(R.id.note_card_color,new View.OnClickListener(){
+				@Override
+				public void onClick(View v){}
+				
+				
+				}
+			}else {
+				holder.setOnLongClickListener(R.id.note_card_color, new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+					adapter.setClickLong(true);
+                    holder.setVisiblity(R.id.note_checkbox);
+					cancleDeletLayout.setVisibility(View.VISIBILITY);
+                    holder.setChecked(R.id.note_checkbox,adapter.isSelectItems(holder.getAdapterPosition()));
+                    return true;
+                }
+            });
+			}
+
+            
+		}
+}
