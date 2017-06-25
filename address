@@ -36,159 +36,114 @@ recyclerView下拉刷新、上划加载：https://github.com/llxdaxia/RecyclerVi
 
 
 
+package com.example.bianqian.adapter;
 
-package com.example.bianqian.fragment;
-
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
-import com.example.bianqian.R;
-import com.example.bianqian.adapter.MultiItemTypeSupport;
-import com.example.bianqian.adapter.MyAdapter;
-import com.example.bianqian.adapter.MyViewHolder;
-import com.example.bianqian.db.UserNote;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 刘通 on 2017/6/15.
  */
 
-public class MoodNote extends Fragment {
+public abstract class MyAdapter<T> extends RecyclerView.Adapter<MyViewHolder> {
 
-    public static final int TITLE = 1;
-    public static final int NOTEITEM = 2;
+    protected Context mContext;
+    protected int mLayoutId;
+    protected List<T> Mdatas;
+    protected LayoutInflater mInflater;
+    protected int viewType;
+    protected MultiItemTypeSupport<T> mMultiItemTypeSupport;
 
-    private RecyclerView mainRecyclerView;
+    private List<Integer> selectItems;
 
-    private Button cancleButton,deletButton;
+    private boolean isClickLong = false;
 
-    private LinearLayout cancleDeletLayout;
+    public MyAdapter(Context context,int layoutId,List<T> datas){
+        mContext = context;
+        mInflater = LayoutInflater.from(context);
+        mLayoutId = layoutId;
+        Mdatas = datas;
+    }
 
-    private List<UserNote> data;
+    public MyAdapter(Context context,List<T> datas,MultiItemTypeSupport<T> multiItemTypeSupport){
+        this(context,-1,datas);
+        mMultiItemTypeSupport = multiItemTypeSupport;
+    }
 
-    private MyAdapter<UserNote> adapter;
 
-    private MultiItemTypeSupport<UserNote> multiItemTypeSupport;
+    public List<Integer> getSelectItems() {
+        return selectItems;
+    }
 
-    private Integer date;
+    public void setSelectItems(List<Integer> selectItems) {
+        this.selectItems = selectItems;
+    }
 
-    @Nullable
+    public boolean isClickLong() {
+        return isClickLong;
+    }
+
+    public void setClickLong(boolean clickLong) {
+        isClickLong = clickLong;
+    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.main_activity_recycler,container,false);
-        mainRecyclerView = (RecyclerView) view.findViewById(R.id.main_recyclerview);
-        cancleDeletLayout = (LinearLayout) view.findViewById(R.id.cancle_delet_layout);
-        cancleDeletLayout.setVisibility(View.GONE);
-        cancleButton = (Button) view.findViewById(R.id.cancle_button);
-        deletButton = (Button) view.findViewById(R.id.delet_button);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        multiItemTypeSupport = new MultiItemTypeSupport<UserNote>() {
-            @Override
-            public int getLayoutId(int itenType) {
-                if(itenType == TITLE){
-                    return R.layout.date_item;
-                }else {
-                    return R.layout.item_note;
-                }
-            }
-
-            @Override
-            public int getItemViewType(int position, UserNote userNote) {
-                if(userNote.getObjectId().equals("1")){
-                    return TITLE;
-                }else {
-                    return NOTEITEM;
-                }
-            }
-        };
-
-
-        intialize();
-        adapter = new MyAdapter<UserNote>(getContext(),data,multiItemTypeSupport) {
-            @Override
-            public void convert(final MyViewHolder holder, int viewType, UserNote userNote, boolean isClickLong) {
-                if(viewType == TITLE){
-                    holder.setText(R.id.item_date_title,userNote.getNote());
-                    holder.setInvisiblity(R.id.note_top_line);
-					intializeRecycler(holder,viewType,userNote,isClickLong);
-					
-                }else {
-                    intializeRecycler(holder,viewType,userNote,isClickLong);
-					
-                }
-            }
-        };
-
-        mainRecyclerView.setLayoutManager(layoutManager);
-        mainRecyclerView.setAdapter(adapter);
-        return view;
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        MyViewHolder viewHolder;
+        this.viewType = viewType;
+        if(mLayoutId == -1){
+        int layoutId = mMultiItemTypeSupport.getLayoutId(viewType);
+        viewHolder = MyViewHolder.get(mContext,parent,layoutId);
+        }else {
+            viewHolder = MyViewHolder.get(mContext,parent,mLayoutId);
+        }
+        return viewHolder;
     }
 
-    private List<UserNote> intialize(){
-        data = new ArrayList<>();
-        UserNote user1 = new UserNote();
-        user1.setMoodColor("red");
-        user1.setNote("我爱你");
-        user1.setObjectId("1");
-        data.add(user1);
-        UserNote user2 = new UserNote();
-        user2.setMoodColor("green");
-        user2.setNote("mamapi");
-        user2.setObjectId("2");
-        data.add(user2);
-        UserNote user3 = new UserNote();
-        user3.setMoodColor("blue");
-        user3.setNote("mamapi");
-        user3.setObjectId("3");
-        data.add(user3);
-        return data;
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position) {
+        convert(holder,viewType,Mdatas.get(position), isClickLong());
     }
-	
-	public void intializeRecycler(MyViewHolder holder, int viewType, UserNote userNote, boolean isClickLong){
-			int circleColor,backgroundColor,textColor;
-			switch(userNote){
-				case red : circleColor = R.drawable.red_circle;
-						   backgroundColor = R.color.text_background_red;
-						   textColor = R.color.text_red;
-				break;
-			
-			}
-			holder.setCircleColor(R.id.note_circle,circleColor);
-            holder.setBackGround(R.id.note_card_color,backgroundColor);
-            holder.setTextColor(R.id.note_text,textColor);
-			holder.setText(R.id.note_text,userNote.getNote());
-			if(isClickLong){
-				holder.setOnClickListener(R.id.note_card_color,new View.OnClickListener(){
-				@Override
-				public void onClick(View v){}
-				
-				
-				}
-			}else {
-				holder.setOnLongClickListener(R.id.note_card_color, new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-					adapter.setClickLong(true);
-                    holder.setVisiblity(R.id.note_checkbox);
-					cancleDeletLayout.setVisibility(View.VISIBILITY);
-                    holder.setChecked(R.id.note_checkbox,adapter.isSelectItems(holder.getAdapterPosition()));
-                    return true;
-                }
-            });
-			}
 
-            
-		}
+    public abstract void convert(MyViewHolder holder,int viewType, T t, boolean isClickLong);
+
+    @Override
+    public int getItemCount() {
+        return Mdatas.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(mLayoutId == -1){
+            return mMultiItemTypeSupport.getItemViewType(position,Mdatas.get(position));
+        }else {
+        return super.getItemViewType(position);
+        }
+    }
+
+    public boolean isSelectItems(Integer position){
+        return getSelectItems().contains(position);
+    }
+
+    public void switchSelectState(Integer position){
+        if(getSelectItems().contains(position)){
+            selectItems.remove(position);
+        }else {
+            selectItems.add(position);
+        }
+        notifyItemChanged(position);
+    }
+
+    public int getSelectItemCount(){
+        return selectItems.size();
+    }
+
+    public void clearSelectItems(){
+        selectItems.clear();
+    }
 }
+
