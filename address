@@ -41,3 +41,68 @@ GAMERS電玩咖
 
 
 
+
+
+private void onClick(int x, int y){
+        int row = y / mRowSize;
+        int column = x / mColumnSize;
+        setSelYTD(mSelYear, mSelMonth, mDays[row][column]);
+
+        // 判断是否可以添加
+        boolean isCanAdd = mOptionalDates.contains(getSelData(mSelYear, mSelMonth, mSelDate));
+        if(isCanAdd){
+            mSelectedDates.add(getSelData(mSelYear, mSelMonth, mSelDate));
+            if(mListener != null){
+                // 执行回调
+                mListener.onClickDateListener(getSelData(mSelYear, mSelMonth, mSelDate));
+            }
+        }
+        invalidate();
+    }
+
+
+
+
+
+
+calendarView.setOnClickDate(new CalendarView.OnClickListener() {
+            @Override
+            public void onClickDateListener(String selectDate) {
+                //Log.d("select",selectDate);
+					calendarView.setClickable(false);
+                    if (isCurrentMonth) {
+                        //如果是当月，将签到日期累加
+                        signInDays.add(selectDate);
+                    } else {
+                        //如果不是当月，初始化新的日期
+                        signInDays.clear();
+                        signInDays.add(selectDate);
+                    }
+                    //更新经验
+                    mEveryDayEmpircalValue = getEveryDayEmpircalValue();
+                    mEmpircalValue = mEmpircalValue + mEveryDayEmpircalValue;
+
+                    User upUser = new User();
+                    upUser.setCurrentMonth(currentMonth);
+                    upUser.setSignInDays(signInDays);
+                    upUser.setEmpircalValue(mEmpircalValue);
+                    upUser.update(user.getObjectId(), new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                ShowToast("签到成功 经验+" + mEveryDayEmpircalValue);
+                                setLeve(mEmpircalValue);
+                            } else {
+                                ShowToast(ShowError.showError(e));
+                                //失败需要重新绘制Calendar
+								calendarView.setClickable(true);
+                                calendarView.setSelectedDates(mSelectDays);
+                                calendarView.invalidate();
+                                mEmpircalValue = mEmpircalValue - mEveryDayEmpircalValue;
+                            }
+                        }
+                    });
+                
+            }
+        });
+
