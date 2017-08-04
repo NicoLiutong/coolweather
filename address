@@ -43,7 +43,7 @@ public static LogUtil{
 			Log.d("s","id " + "userNotes.get(i).getId()\n" + "noteId " + "userNotes.get(i).getNoteId()\n" + 
 			"userId " + "userNotes.get(i).getUserId()\n" + 
 			"moodColor " + "userNotes.get(i).getMoonColor()\n" + "note " + "userNotes.get(i).getNote()\n" + 
-			"date " + "userNotes.get(i).getDate().toString()\n");
+			"date " + "userNotes.get(i).getUpdateDate().toString()\n" + "type " + "userNotes.get(i).getUpdateType()");
 		}
 		
 	
