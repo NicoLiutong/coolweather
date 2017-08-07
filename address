@@ -29,6 +29,7 @@ AndroidStudio使用:http://www.open-open.com/lib/view/open1468121363300.html;htt
 RecyclerVtew滑动监听：http://blog.csdn.net/wyb112233/article/details/50429077
 recyclerView下拉刷新、上划加载：https://github.com/llxdaxia/RecyclerView
 洪洋实现个性viewPager：http://blog.csdn.net/lmj623565791/article/details/38026503
+                      http://blog.csdn.net/lmj623565791/article/details/40411921/
 
 
 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TestChat"
