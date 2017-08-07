@@ -28,31 +28,11 @@ RecyclerView長按多選：http://blog.csdn.net/Loften_93663469/article/details/
 AndroidStudio使用:http://www.open-open.com/lib/view/open1468121363300.html;http://www.open-open.com/lib/view/open1468121618489.html;
 RecyclerVtew滑动监听：http://blog.csdn.net/wyb112233/article/details/50429077
 recyclerView下拉刷新、上划加载：https://github.com/llxdaxia/RecyclerView
+洪洋实现个性viewPager：http://blog.csdn.net/lmj623565791/article/details/38026503
+
 
 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TestChat"
 
-
-
-
-
-
-public static LogUtil{
-
-	public static d(String s,List<LocalUserNote> userNotes){
-		for(int i = 0;i < userNotes.size();i ++){
-			Log.d("s","id " + "userNotes.get(i).getId()\n" + "noteId " + "userNotes.get(i).getNoteId()\n" + 
-			"userId " + "userNotes.get(i).getUserId()\n" + 
-			"moodColor " + "userNotes.get(i).getMoonColor()\n" + "note " + "userNotes.get(i).getNote()\n" + 
-			"date " + "userNotes.get(i).getUpdateDate().toString()\n" + "type " + "userNotes.get(i).getUpdateType()");
-		}
-		
-	
-	
-	}
-	
-	
-
-}
 
 
 
