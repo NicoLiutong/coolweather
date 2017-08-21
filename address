@@ -33,6 +33,10 @@ recyclerView下拉刷新、上划加载：https://github.com/llxdaxia/RecyclerVi
                       http://blog.csdn.net/lmj623565791/article/details/40411921/
                       http://blog.csdn.net/harvic880925/article/details/38521865
 Photoview:http://blog.csdn.net/wu928320442/article/details/43056731
+組件的綁定Butter Knife：http://jakewharton.github.io/butterknife/
+網絡請求Retrofit：http://square.github.io/retrofit/
+線程控制Rx Java：http://gank.io/post/560e15be2dca930e00da1083#toc_13
+                http://gank.io/post/56e80c2c677659311bed9841
           
 
 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TestChat"
