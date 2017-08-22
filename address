@@ -37,6 +37,10 @@ Photoview:http://blog.csdn.net/wu928320442/article/details/43056731
 網絡請求Retrofit：http://square.github.io/retrofit/
 線程控制Rx Java：http://gank.io/post/560e15be2dca930e00da1083#toc_13
                 http://gank.io/post/56e80c2c677659311bed9841
+Android 快速发布开源项目到jcenter:http://blog.csdn.net/lmj623565791/article/details/51148825 
+                                http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0623/3097.html
+                                http://www.cnblogs.com/qianxudetianxia/p/4322331.html
+               
           
 
 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TestChat"
