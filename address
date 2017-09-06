@@ -40,7 +40,11 @@ Photoview:http://blog.csdn.net/wu928320442/article/details/43056731
 Android 快速发布开源项目到jcenter:http://blog.csdn.net/lmj623565791/article/details/51148825 
                                 http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0623/3097.html
                                 http://www.cnblogs.com/qianxudetianxia/p/4322331.html
-               
+        
+        
+服务器：http://www.centoscn.com/
+       http://www.centoscn.com/CentOS/help/2017/0831/8932.html
+       http://www.jcloud.com/productTrialforPay?uuid=9f8099fb-3cb8-4b04-8194-cab784866a22
           
 
 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TestChat"
