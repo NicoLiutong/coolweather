@@ -45,6 +45,9 @@ Android 快速发布开源项目到jcenter:http://blog.csdn.net/lmj623565791/art
 服务器：http://www.centoscn.com/
        http://www.centoscn.com/CentOS/help/2017/0831/8932.html
        http://www.jcloud.com/productTrialforPay?uuid=9f8099fb-3cb8-4b04-8194-cab784866a22
+       
+网易云音乐api：http://blog.csdn.net/qq_21265915/article/details/53000005
+         http://blog.csdn.net/alfred_c/article/details/50471171
           
 
 Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "TestChat"
